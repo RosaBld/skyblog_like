@@ -1,12 +1,23 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../models/Users');
 
 exports.register = async (req, res) => {
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  const user = new User({ username: req.body.username, password: hashedPassword });
-  await user.save();
-  res.sendStatus(201);
+  const { username, password } = req.body;
+  const saltRounds = 10;
+  if (!password) {
+    return res.status(400).json({ error: 'Password is required' });
+  }
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const user = new User({ username, password: hashedPassword });
+    await user.save();
+    res.json({ status: 'Created' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 exports.login = async (req, res) => {
@@ -15,6 +26,6 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, 'JWTKEY', { expiresIn: '1h' });
     res.send({ token });
   } else {
-    res.sendStatus(401);
+    res.json({ status: 'Unauthorized' });
   }
 };
