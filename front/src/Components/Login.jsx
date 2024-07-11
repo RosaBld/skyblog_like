@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../utils/AuthContext"; // Adjust the path as necessary
+
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -22,14 +27,19 @@ export default function Login() {
       });
   
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        const jsonResponse = await response.json();
+        console.log("API Response:", jsonResponse);
+        
+        const { token } = jsonResponse;
+        console.log(token);
+        login(token, username);
       } else {
         console.log('Login failed!');
       }
     } catch (error) {
       console.error(error);
     }
+    navigate('/')
   }
 
   return (
@@ -37,11 +47,11 @@ export default function Login() {
       <form onSubmit={loginUser}>
         <div>
           <label>Username:</label>
-          <input value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div>
           <label>Password</label>
-          <input value={password} onChange={e => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
         </div>
         <button type="submit">Login</button>
       </form>

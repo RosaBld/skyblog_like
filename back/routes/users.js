@@ -6,7 +6,7 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 
 router.get('/me', auth, async (req, res) => {
-  const user = await User.findById(req.userId);
+  const user = await user.findById(req.userId);
   res.send({ username: user.username });
 })
 

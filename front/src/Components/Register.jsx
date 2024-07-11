@@ -38,11 +38,11 @@ export default function Register() {
       <form onSubmit={registerUser}>
         <div>
           <label>Username:</label>
-          <input value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div>
           <label>Password</label>
-          <input value={password} onChange={e => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
         </div>
         <button type="submit">Register</button>
       </form>

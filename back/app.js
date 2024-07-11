@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost:27017/skyblog_like', { useNewUrlParser: tr
 
 app.post("/register", userController.register);
 app.post("/login", userController.login);
+app.get("/user/:userId", userController.getUserInfo);
 
 // Start the server
 const port = process.env.PORT || 5000;
