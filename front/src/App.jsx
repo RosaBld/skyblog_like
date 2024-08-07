@@ -11,6 +11,7 @@ import Articles from './views/Articles';
 import useSessionManagement from './utils/HandleSession';
 
 import { AuthProvider, AuthContext } from './utils/AuthContext';
+import Profil from './views/Profil';
 
 ReactModal.setAppElement('#root');
 
@@ -28,11 +29,13 @@ function App() {
               <>
                 <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
                 <Route path="/articles" element={ <Articles /> } />
+                <Route path="/profil" element={ <Profil /> } />
               </>
             ) : (
               <>
                 <Route path="/register" element={ <Register /> } />
                 <Route path="/login" element={ <Login /> } />
+                <Route path="/profil" element={ <Profil /> } />
                 <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
               </>
             )}

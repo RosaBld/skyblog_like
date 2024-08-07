@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [setPassword] = useState('');
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -34,8 +35,17 @@ export const AuthProvider = ({ children }) => {
     setUsername('');
   };
 
+  const updateUsername = (newUsername) => {
+    Cookies.set('username', newUsername, { expires: 1, secure: true, sameSite: 'Strict' });
+    setUsername(newUsername);
+  }
+
+  const updatePassword = (newPassword) => {
+    setPassword(newPassword);
+  }
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, username }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, username, updateUsername, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );

@@ -47,12 +47,46 @@ exports.login = async (req, res) => {
       sameSite: 'Strict'
     });
 
-    res.status(200).json({ message: 'Login successful', username });
+    res.status(200).json({ message: 'Login successful', token, username });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+exports.updateUsername = async (req, res) => {
+  const { newUsername } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(req.userId, { username: newUsername });
+    const token = jwt.sign({ userId: req.userId, username: newUsername }, process.env.JWTKEY, { expiresIn: '1h' });
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600000,
+      sameSite: 'Strict', 
+    });
+    
+    res.status(200).json({ message: 'Username updated successfully', username: newUsername });
+  } catch (error) {
+    console.error('Error updating username', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+exports.updatePassword = async (req, res) => {
+  const { newPassword } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await User.findByIdAndUpdate(req.userId, { password: hashedPassword });
+    res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Error updating password', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
 exports.getUserInfo = async (req, res) => {
   try {

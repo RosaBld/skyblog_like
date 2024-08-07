@@ -41,9 +41,16 @@ export default function Header() {
         </ul>
         <ul>
           {isLoggedIn ? (
-            <li>
-              <button onClick={logout}>Log Out</button>
-            </li>
+            <div>
+              <li>
+                <Link to="/profil">
+                  Profil
+                </Link>
+              </li>
+              <li>
+                <button onClick={logout}>Log Out</button>
+              </li>
+            </div>
           ) : (
             <div>
               <button onClick={toggleModal}>Login</button>

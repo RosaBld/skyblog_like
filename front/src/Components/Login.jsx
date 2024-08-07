@@ -28,7 +28,6 @@ export default function Login() {
         console.log("Login successful");
         
         login(data.token, username);
-        console.log(data.token, username);
         
       } else {
         console.log('Login failed!');
@@ -43,7 +42,7 @@ export default function Login() {
       <form onSubmit={loginUser}>
         <div>
           <label>Username:</label>
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div>
           <label type="password">Password</label>
