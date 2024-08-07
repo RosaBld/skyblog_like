@@ -1,4 +1,4 @@
-import { useAuth } from '../utils/useAuth'; // Adjust the path as necessary
+import { useAuth } from '../utils/useAuth';
 
 export default function Home() {
   const { isLoggedIn, username } = useAuth();

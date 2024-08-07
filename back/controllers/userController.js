@@ -21,13 +21,36 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
-  if (user && await bcrypt.compare(req.body.password, user.password)) {
-    const token = jwt.sign({ userId: user._id }, 'JWTKEY', { expiresIn: '1h' });
+  try {
+    console.log('JWTKEY:', process.env.JWTKEY);
+
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).json({ status: 'Unauthorized' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+    if (!isPasswordValid) {
+      console.log('Invalid password');
+      return res.status(401).json({ status: 'Unauthorized' });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWTKEY, { expiresIn: '1h' });
     const username = req.body.username;
-    res.send({ token, username });
-  } else {
-    res.json({ status: 'Unauthorized' });
+    console.log('Generated Token:', token);
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600000,
+      sameSite: 'Strict'
+    });
+
+    res.status(200).json({ message: 'Login successful', username });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
@@ -38,9 +61,9 @@ exports.getUserInfo = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json({ username: user.username });
+    res.status(200).json(user);
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user info:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

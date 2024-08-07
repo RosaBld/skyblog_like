@@ -1,12 +1,9 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../utils/AuthContext"; // Adjust the path as necessary
-
+import { AuthContext } from "../utils/AuthContext";
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
   const loginUser = async (e) => {
@@ -27,19 +24,18 @@ export default function Login() {
       });
   
       if (response.ok) {
-        const jsonResponse = await response.json();
-        console.log("API Response:", jsonResponse);
+        const data = await response.json();
+        console.log("Login successful");
         
-        const { token } = jsonResponse;
-        console.log(token);
-        login(token, username);
+        login(data.token, username);
+        console.log(data.token, username);
+        
       } else {
         console.log('Login failed!');
       }
     } catch (error) {
       console.error(error);
     }
-    navigate('/')
   }
 
   return (
@@ -50,8 +46,8 @@ export default function Login() {
           <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div>
-          <label>Password</label>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <label type="password">Password</label>
+          <input type="password" autoComplete="current-password" onChange={e => setPassword(e.target.value)} />
         </div>
         <button type="submit">Login</button>
       </form>
