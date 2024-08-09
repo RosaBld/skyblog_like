@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -5,6 +6,8 @@ const cors = require('cors');
 const userController = require ('./controllers/userController');
 const auth = require('./middleware/auth')
 const cookieParser = require('cookie-parser');
+
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/skyblog_like';
 
 const corsOptions = {
   origin: 'http://localhost:5173',
@@ -18,9 +21,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/skyblog_like')
-  .then(() => console.log('MongoDB connected...'))
-  .catch(err => console.log(err));
+async function connectToMongoDB() {
+  try {
+    await mongoose.connect(mongoURI);
+    console.log('MongoDB connected');
+  } catch (err) {
+    console.error('MongoDB Connection error:', err)
+  }
+}
+
+connectToMongoDB();
+
+// mongoose.connect(mongoURI)
+//   .then(() => console.log('MongoDB connected'))
+//   .catch(err => console.error('MongoDB connection error:', err));
 
 app.post("/register", userController.register);
 app.post("/login", userController.login);
