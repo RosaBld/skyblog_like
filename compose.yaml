@@ -21,10 +21,10 @@ services:
     mem_limit: 1g
     command: mongod --wiredTigerCacheSizeGB 0.5
     healthcheck:
-      test: ["CMD-SHELL", "echo 'db.runCommand({ ping: 1 })' | mongo localhost:27017/test --quiet"]
-      interval: 30s
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
       timeout: 10s
-      retries: 10
+      retries: 5
 
   backend:
     build:
@@ -32,11 +32,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
-    volumes: 
+    volumes:
       - ./back:/usr/src/app
       - /usr/src/app/node_modules
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/skyblog_like
     depends_on:
       mongodb:
         condition: service_healthy
@@ -53,7 +51,7 @@ services:
       context: ./front
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - 5173:5173
     volumes:
       - ./front:/usr/src/app
       - /usr/src/app/node_modules

@@ -41,6 +41,7 @@ app.post("/login", userController.login);
 app.put('/update-username', auth, userController.updateUsername);
 app.put('/update-password', auth, userController.updatePassword);
 app.get("/user/:userId", userController.getUserInfo);
+app.get("/health", (req, res) => res.send('OK'));
 
 // Start the server
 const port = process.env.PORT || 5000;

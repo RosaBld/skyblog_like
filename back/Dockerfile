@@ -4,6 +4,9 @@ FROM node:20-alpine
 # use nodemon to restart the server every time there is a change
 RUN npm install -g nodemon
 
+## add curl mf
+RUN apk update && apk add bash && apk add curl
+
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
