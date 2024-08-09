@@ -7,7 +7,7 @@ const userController = require ('./controllers/userController');
 const auth = require('./middleware/auth')
 const cookieParser = require('cookie-parser');
 
-const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/skyblog_like';
+const mongoURI = process.env.MONGO_URI;
 
 const corsOptions = {
   origin: 'http://localhost:5173',
