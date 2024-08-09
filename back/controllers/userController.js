@@ -1,22 +1,37 @@
 require('dotenv').config();
+const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
 
 exports.register = async (req, res) => {
-  const { username, password } = req.body;
-  const saltRounds = 10;
-  if (!password) {
-    return res.status(400).json({ error: 'Password is required' });
-  }
-  try {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const user = new User({ username, password: hashedPassword });
-    await user.save();
-    res.json({ status: 'Created' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+  // Validate and sanitize inputs
+  body('username').isLength({ min: 3, max: 30 }).matches(/^[a-zA-Z0-9_]+$/).trim().escape();
+  body('password').isLength({ min: 8 }).matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/).trim().escape(),
+  
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { username, password } = req.body;
+    const saltRounds = 10;
+
+    try {
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(400).json({ error: 'Username is already taken' });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const user = new User({ username, password: hashedPassword });
+      await user.save();
+      res.json({ status: 'Created' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 };
 

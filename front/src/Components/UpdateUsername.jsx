@@ -32,7 +32,7 @@ export default function UpdateUsername() {
   return (
      <div>
       <button onClick={toggleModal}>
-        Update Password
+        Update Username
       </button>
       <ReactModal 
         isOpen={showModal}

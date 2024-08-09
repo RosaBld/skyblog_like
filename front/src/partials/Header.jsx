@@ -35,7 +35,7 @@ export default function Header() {
           </li>
           <li>
             <Link to="">
-              Home
+              Pouet Pouet
             </Link>
           </li>
         </ul>
