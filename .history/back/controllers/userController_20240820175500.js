@@ -21,7 +21,6 @@ exports.register = [
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) {
-        console.log('Username already taken:', username);
         return res.status(400).json({ error: 'Username is already taken' });
       }
 

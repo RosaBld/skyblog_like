@@ -68,7 +68,7 @@ services:
     networks:
       - skyblog_network
     environment:
-      NODE_ENV: production
+      - NODE_ENV=production
     command: npm run dev
 
 networks:

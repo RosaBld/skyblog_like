@@ -4,11 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
 
-exports.register = [
+exports.register = async (req, res) => {
   // Validate and sanitize inputs
-  body('username').isLength({ min: 3, max: 30 }).matches(/^[a-zA-Z0-9_]+$/).trim().escape(),
+  body('username').isLength({ min: 3, max: 30 }).matches(/^[a-zA-Z0-9_]+$/).trim().escape();
   body('password').isLength({ min: 8 }).matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/).trim().escape(),
-
+  
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -21,7 +21,6 @@ exports.register = [
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) {
-        console.log('Username already taken:', username);
         return res.status(400).json({ error: 'Username is already taken' });
       }
 
@@ -34,7 +33,7 @@ exports.register = [
       res.status(500).json({ error: 'Internal server error' });
     }
   }
-];
+};
 
 exports.login = async (req, res) => {
   try {

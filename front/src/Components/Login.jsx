@@ -39,14 +39,24 @@ export default function Login() {
 
   return (
     <div>
+      <h2>Login</h2>
       <form onSubmit={loginUser}>
         <div>
           <label>Username:</label>
-          <input type="text" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} />
+          <input 
+            type="text" 
+            autoComplete="username" 
+            value={username} 
+            onChange={e => setUsername(e.target.value)} 
+          />
         </div>
         <div>
           <label type="password">Password</label>
-          <input type="password" autoComplete="current-password" onChange={e => setPassword(e.target.value)} />
+          <input 
+            type="password" 
+            autoComplete="current-password"
+            onChange={e => setPassword(e.target.value)} 
+          />
         </div>
         <button type="submit">Login</button>
       </form>

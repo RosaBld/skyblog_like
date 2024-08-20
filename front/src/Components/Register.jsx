@@ -53,18 +53,23 @@ export default function Register() {
 
   return (
     <form onSubmit={registerUser}>
+      <h2>Register</h2>
       <div>
         <label>Username:</label>
         <input
           type="text"
+          autoComplete="username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
         />
       </div>
       <div>
         <label>Password:</label>
         <input
           type="password"
+          autoComplete="current-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

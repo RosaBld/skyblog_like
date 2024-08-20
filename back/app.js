@@ -7,6 +7,8 @@ const userController = require ('./controllers/userController');
 const auth = require('./middleware/auth')
 const cookieParser = require('cookie-parser');
 
+const articleController = require('./controllers/articleController');
+
 const mongoURI = process.env.MONGO_URI;
 
 const corsOptions = {
@@ -42,6 +44,8 @@ app.put('/update-username', auth, userController.updateUsername);
 app.put('/update-password', auth, userController.updatePassword);
 app.get("/user/:userId", userController.getUserInfo);
 app.get("/health", (req, res) => res.send('OK'));
+
+app.post("/newArticle", auth, articleController.newArticle);
 
 // Start the server
 const port = process.env.PORT || 5000;
