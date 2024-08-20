@@ -70,26 +70,46 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.updateUsername = async (req, res) => {
-  const { newUsername } = req.body;
+exports.updateUsername = [
+  // Validate and sanitize inputs
+  body('newUsername').isLength({ min: 3, max: 30 }).matches(/^[a-zA-Z0-9_]+$/).trim().escape(),
 
-  try {
-    await User.findByIdAndUpdate(req.userId, { username: newUsername });
-    const token = jwt.sign({ userId: req.userId, username: newUsername }, process.env.JWTKEY, { expiresIn: '1h' });
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000,
-      sameSite: 'Strict', 
-    });
-    
-    res.status(200).json({ message: 'Username updated successfully', username: newUsername });
-  } catch (error) {
-    console.error('Error updating username', error);
-    res.status(500).json({ error: 'Internal server error' });
+    const { newUsername } = req.body;
+
+    try {
+      // Check if the new username is already taken
+      const existingUser = await User.findOne({ username: newUsername });
+      if (existingUser) {
+        return res.status(400).json({ error: 'Username is already taken' });
+      }
+
+      // Update the username
+      await User.findByIdAndUpdate(req.userId, { username: newUsername });
+
+      // Generate a new token with the updated username
+      const token = jwt.sign({ userId: req.userId, username: newUsername }, process.env.JWTKEY, { expiresIn: '1h' });
+
+      // Set the new token in the cookie
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000,
+        sameSite: 'Strict',
+      });
+
+      res.status(200).json({ message: 'Username updated successfully', username: newUsername });
+    } catch (error) {
+      console.error('Error updating username', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
-}
+];
 
 exports.updatePassword = async (req, res) => {
   const { newPassword } = req.body;

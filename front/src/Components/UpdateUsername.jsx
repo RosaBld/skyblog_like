@@ -6,22 +6,50 @@ export default function UpdateUsername() {
   const [newUsername, setNewUsername] = useState('');
   const { updateUsername } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleUpdateUsername = async () => {
-    const response = await fetch('http://localhost:5000/update-username', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({ newUsername })
-    });
+  const validateInput = () => {
+    const usernameRegex = /^[a-zA-Z0-9_]{3,30}$/;
 
-    if (response.ok) {
-      const data = await response.json();
-      updateUsername(data.username);
-    } else {
-      console.log('Failed to update username, status:', response.status);
+    if (!usernameRegex.test(newUsername)) {
+      setError('Username must be 3-30 characters long and can only contain letters, numbers, and underscores.');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleUpdateUsername = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!validateInput()) {
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/update-username', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ newUsername })
+      });
+  
+      if (response.ok) {
+        alert('Username Updated!');
+        const data = await response.json();
+        updateUsername(data.username);
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Registration failed');
+        console.log('Failed to update username, status:', response.status);
+      
+      } 
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred. Please try again later.');
     }
   };
 
@@ -67,6 +95,7 @@ export default function UpdateUsername() {
           <button onClick={handleUpdateUsername}>
             Validate
           </button>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
         </form>
       </ReactModal>
     </div>
