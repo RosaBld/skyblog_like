@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactModal from 'react-modal';
 
 import NewArticle from "../Components/NewArticle";
-
+import DisplayArticles from '../Components/DisplayArticles';
 
 export default function Articles() {
   const [showModal, setShowModal] = useState(false);
@@ -10,14 +10,14 @@ export default function Articles() {
   const toggleModal = () => {
     setShowModal(!showModal);
   }
-  
+
   return (
     <div>
       <div>
         <h2>
           Create your articles
         </h2>
-        <button onClick={setShowModal}>
+        <button onClick={toggleModal}>
           +
         </button>
         <ReactModal 
@@ -49,7 +49,7 @@ export default function Articles() {
       <div>
         <h3>Your articles</h3>
         <div>
-
+          <DisplayArticles />
         </div>
       </div>
       
