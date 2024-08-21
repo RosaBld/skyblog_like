@@ -29,13 +29,13 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/articles">
-              Articles
+            <Link to="/myFriends">
+              My Friends
             </Link>
           </li>
           <li>
             <Link to="">
-              Pouet Pouet
+              Search Bar
             </Link>
           </li>
         </ul>
@@ -44,7 +44,7 @@ export default function Header() {
             <div>
               <li>
                 <Link to="/profil">
-                  Profil
+                  My Profil
                 </Link>
               </li>
               <li>

@@ -1,6 +1,6 @@
-import UpdatePassword from "../Components/UpdatePassword";
-import UpdateUsername from "../Components/UpdateUsername";
+import { Link } from 'react-router-dom';
 import { useAuth } from '../utils/useAuth';
+import Articles from "./Articles";
 
 export default function Profil() {
   const { username } = useAuth();
@@ -8,11 +8,14 @@ export default function Profil() {
   return (
     <div>
       <h2>Welcome on your profile, {username}</h2>
-      <h3>Here, you can modify your username and password.</h3>
-      <div>
-        <UpdateUsername />
-        <UpdatePassword />
-      </div>
+
+      <Articles />
+      
+      <button>
+        <Link to="/options">
+          Options
+        </Link>
+      </button>
     </div>
   )
 }
