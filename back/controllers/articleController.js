@@ -9,8 +9,9 @@ exports.newArticle = [
     const userId = req.userId;
 
     try {
-      const user = await User.findById(req.userId);
+      const user = await User.findById(userId);
       if (!user) {
+        console.log('User not found in newArticle, sending 404');
         return res.status(404).json({ error: 'User not found' });
       }
 
@@ -23,7 +24,7 @@ exports.newArticle = [
       await article.save();
       res.status(201).json({ message: 'Article created successfully', article });
     } catch (error) {
-      console.error(error);
+      console.error('Error in newArticle:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }
@@ -31,20 +32,23 @@ exports.newArticle = [
 
 exports.userArticles = [
   auth,
-  async(req, res) => {
+  async (req, res) => {
     const userId = req.userId;
+    console.log('userId from auth middleware:', userId);
 
     try {
-      const user = await User.findById(req.userId);
+      const user = await User.findById(userId);
       if (!user) {
+        console.log('User not found in userArticles, sending 404');
         return res.status(404).json({ error: 'User not found' });
       }
 
       const articles = await Article.find({ user: userId });
+      console.log('Articles found:', articles);
       res.status(200).json({ articles });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal servor error' });
+      console.error('Error in userArticles:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 ];
