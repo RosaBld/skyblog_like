@@ -19,11 +19,40 @@ export const AuthProvider = ({ children }) => {
         setUsername(storedUsername);
       }
     }
+
+    const checkCookieExpiration = async () => {
+      const token = Cookies.get('token');
+      if (!token) {
+        setIsLoggedIn(false);
+        setUsername('');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:5000/check-token', {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+        });
+        
+        if (response.status === 401) {
+          logout();
+        }
+      } catch (error) {
+        console.error('Error checking token validaty:', error)
+      }
+    };
+
+    const intervalId = setInterval(checkCookieExpiration, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const login = (token, username) => {
-    Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'Strict' });
-    Cookies.set('username', username, { expires: 1, secure: true, sameSite: 'Strict' });
+    const expires = new Date(new Date().getTime() + 60 * 60 * 1000);
+    Cookies.set('token', token, { expires, secure: true, sameSite: 'Strict' });
+    Cookies.set('username', username, { expires, secure: true, sameSite: 'Strict' });
     setIsLoggedIn(true);
     setUsername(username);
   };

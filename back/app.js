@@ -6,6 +6,7 @@ const cors = require('cors');
 const userController = require ('./controllers/userController');
 const auth = require('./middleware/auth')
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const articleController = require('./controllers/articleController');
 
@@ -44,6 +45,21 @@ app.put("/update-username", auth, userController.updateUsername);
 app.put("/update-password", auth, userController.updatePassword);
 app.get("/user/:userId", userController.getUserInfo);
 app.get("/health", (req, res) => res.send('OK'));
+
+app.get("/check-token", (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).send('No token provided');
+  }
+  
+  try {
+    jwt.verify(token, process.env.JWTKEY);
+    res.status(200).send('Token is valid');
+  } catch (error) {
+    res.status(401).send('Token is invalid or expired')
+  }
+});
 
 app.post("/newArticle", auth, articleController.newArticle);
 app.get("/userArticles", auth, articleController.userArticles);
