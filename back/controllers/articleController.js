@@ -81,7 +81,10 @@ exports.latestArticlesForWeek = [
       // Flatten the array of arrays and filter out empty arrays
       const flattenedArticles = latestArticles.flat().filter(article => article);
 
-      res.status(200).json({ articles: flattenedArticles });
+      // Sort the flattened articles by createdAt in descending order
+      const sortedArticles = flattenedArticles.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      res.status(200).json({ articles: sortedArticles });
     } catch (error) {
       console.error('Error in latestArticlesForWeek:', error);
       res.status(500).json({ error: 'Internal server error' });
