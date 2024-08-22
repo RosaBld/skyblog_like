@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
+const Article = require('../models/Article');
 
 async function auth(req, res, next) {
   const token = req.cookies.token;
@@ -14,18 +15,19 @@ async function auth(req, res, next) {
 
   jwt.verify(token, process.env.JWTKEY, async (err, payload) => {
     if (err) {
-      console.log('Token verification failed:', err);
       return res.status(401).json({ error: 'Token verification failed' });
     }
-    console.log('Token verified, payload:', payload);
 
     try {
-      const user = await User.findById(payload.userId);
+      const userId = payload.userId;
+      const user = await User.findById(userId);
+
       if (!user) {
-        console.log('User not found, sending 401');
         return res.status(401).json({ error: 'User not found' });
       }
+
       req.userId = user._id;
+      
       next();
     } catch (error) {
       console.error('Error finding user:', error);

@@ -52,3 +52,43 @@ exports.userArticles = [
     }
   }
 ];
+
+exports.latestArticlesForWeek = [
+  auth,
+  async (req, res) => {
+    try {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+      // Fetch all users
+      const users = await User.find();
+
+      // Fetch the latest article for each user created within the last week
+      const latestArticles = await Promise.all(users.map(async (user) => {
+        const articles = await Article.find({
+          user: user._id,
+          createdAt: { $gte: oneWeekAgo }
+        }).sort({ createdAt: -1 });
+
+        if (articles.length > 0) {
+          return {
+            user: user.username,
+            articles: articles.map(article => ({             
+              title: article.title,
+              content: article.content,
+              createdAt: article.createdAt}
+            ))
+          };
+        }
+      }));
+
+      // Filter out null values (users without articles in the last week)
+      const filteredArticles = latestArticles.filter(article => article !== null);
+
+      res.status(200).json({ latestArticles: filteredArticles });
+    } catch (error) {
+      console.error('Error in latestArticlesForWeek:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+];

@@ -52,7 +52,7 @@ app.get("/check-token", (req, res) => {
   if (!token) {
     return res.status(401).send('No token provided');
   }
-  
+
   try {
     jwt.verify(token, process.env.JWTKEY);
     res.status(200).send('Token is valid');
@@ -63,6 +63,7 @@ app.get("/check-token", (req, res) => {
 
 app.post("/newArticle", auth, articleController.newArticle);
 app.get("/userArticles", auth, articleController.userArticles);
+app.get("/latestArticlesForWeek", auth, articleController.latestArticlesForWeek);
 
 // Start the server
 const port = process.env.PORT || 5000;
