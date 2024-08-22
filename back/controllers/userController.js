@@ -124,6 +124,24 @@ exports.updatePassword = async (req, res) => {
   }
 }
 
+exports.searchUsers = async (req, res) => {
+  try {
+    const query = req.query.q;
+    if (!query) {
+      return res.status(400).json({ error: 'Query parameter is required' });
+    }
+
+    // Perform the search and exclude the password and _id fields
+    const users = await User.find({ username: { $regex: query, $options: 'i' } })
+                            .select('username -_id');
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error in searchUsers:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
 exports.getUserInfo = async (req, res) => {
   try {
     const userId = req.params.userId;

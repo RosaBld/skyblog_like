@@ -4,6 +4,7 @@ import ReactModal from 'react-modal';
 import Login from '../Components/Login';
 import Register from '../Components/Register';
 import { Link } from 'react-router-dom';
+import SearchBar from '../Components/SearchBar';
 
 export default function Header() {
 
@@ -34,9 +35,7 @@ export default function Header() {
             </Link>
           </li>
           <li>
-            <Link to="">
-              Search Bar
-            </Link>
+            <SearchBar />
           </li>
         </ul>
         <ul>

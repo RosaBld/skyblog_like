@@ -45,6 +45,7 @@ app.put("/update-username", auth, userController.updateUsername);
 app.put("/update-password", auth, userController.updatePassword);
 app.get("/user/:userId", userController.getUserInfo);
 app.get("/health", (req, res) => res.send('OK'));
+app.get("/searchUsers", userController.searchUsers);
 
 app.get("/check-token", (req, res) => {
   const token = req.cookies.token;
