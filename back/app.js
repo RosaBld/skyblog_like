@@ -43,9 +43,9 @@ app.post("/register", userController.register);
 app.post("/login", userController.login);
 app.put("/update-username", auth, userController.updateUsername);
 app.put("/update-password", auth, userController.updatePassword);
-app.get("/user/:userId", userController.getUserInfo);
 app.get("/health", (req, res) => res.send('OK'));
 app.get("/searchUsers", userController.searchUsers);
+app.get("/getUserInfo", userController.getUserInfo);
 
 app.get("/check-token", (req, res) => {
   const token = req.cookies.token;
@@ -64,7 +64,7 @@ app.get("/check-token", (req, res) => {
 
 app.post("/newArticle", auth, articleController.newArticle);
 app.get("/userArticles", auth, articleController.userArticles);
-app.get("/latestArticlesForWeek", auth, articleController.latestArticlesForWeek);
+app.get("/latestArticlesForWeek", articleController.latestArticlesForWeek);
 
 // Start the server
 const port = process.env.PORT || 5000;

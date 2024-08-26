@@ -14,6 +14,7 @@ import { AuthProvider, AuthContext } from './utils/AuthContext';
 import Profil from './views/Profil';
 import Options from './views/Options';
 import MyFriends from './views/MyFriends';
+import User from './views/User';
 
 ReactModal.setAppElement('#root');
 
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/register" element={ <Register /> } />
                 <Route path="/login" element={ <Login /> } />
                 <Route path="/profil" element={ <Profil /> } />
+                <Route path="/user/:username" element={<User />} />
                 <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
               </>
             )}

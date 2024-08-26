@@ -29,29 +29,32 @@ export default function Header() {
               Home
             </Link>
           </li>
-          <li>
-            <Link to="/myFriends">
-              My Friends
-            </Link>
-          </li>
-          <li>
-            <SearchBar />
-          </li>
         </ul>
         <ul>
           {isLoggedIn ? (
-            <div>
+            <>
+              <li>
+                <Link to="/myFriends">
+                  My Friends
+                </Link>
+              </li>
               <li>
                 <Link to="/profil">
                   My Profil
                 </Link>
               </li>
               <li>
+                <SearchBar />
+              </li>
+              <li>
                 <button onClick={logout}>Log Out</button>
               </li>
-            </div>
+            </>
           ) : (
-            <div>
+            <>
+              <li>
+                <SearchBar />
+              </li>
               <button onClick={toggleModal}>Login</button>
               <ReactModal 
                 isOpen={showModal}
@@ -79,7 +82,7 @@ export default function Header() {
                 {isLoginView ? <Login /> : <Register />}
                 <button onClick={toggleView}>{isLoginView ? "Switch to Register" : "Switch to Login"}</button>
               </ReactModal>
-            </div>
+            </>
           )}
         </ul>
       </nav>

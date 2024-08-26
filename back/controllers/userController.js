@@ -3,6 +3,8 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Users');
+const Article = require('../models/Article');
+
 
 exports.register = [
   // Validate and sanitize inputs
@@ -144,12 +146,18 @@ exports.searchUsers = async (req, res) => {
 
 exports.getUserInfo = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId, 'username');
+    const username = req.query.username;
+    const user = await User.findOne({ username: username }, 'username');
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.status(200).json(user);
+
+    const articles = await Article.find({ user: user._id });
+
+    res.status(200).json({
+      user,
+      articles
+    });
   } catch (error) {
     console.error('Error fetching user info:', error);
     res.status(500).json({ error: 'Internal server error' });

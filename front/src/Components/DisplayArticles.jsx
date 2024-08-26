@@ -36,6 +36,7 @@ export default function DisplayArticles() {
           <div key={article._id}>
             <h2>{article.title}</h2>
             <p>{article.content}</p>
+            <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
           </div>
         ))
       ) : (

@@ -54,7 +54,6 @@ exports.userArticles = [
 ];
 
 exports.latestArticlesForWeek = [
-  auth,
   async (req, res) => {
     try {
       const oneWeekAgo = new Date();
