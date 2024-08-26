@@ -152,10 +152,10 @@ exports.getUserInfo = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const articles = await Article.find({ user: user._id });
+    const articles = await Article.find({ user: user._id }).select('-user');
 
     res.status(200).json({
-      user,
+      user: { username: user.username },
       articles
     });
   } catch (error) {

@@ -32,6 +32,7 @@ function App() {
               <>
                 <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
                 <Route path="/myFriends" element={ <MyFriends /> } />
+                <Route path="/user/:username" element={<User />} />
                 {/* <Route path="/articles" element={ <Articles /> } /> */}
                 <Route path="/options" element={ <Options /> } />
                 <Route path="/profil" element={ <Profil /> } />
