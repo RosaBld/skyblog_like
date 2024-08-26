@@ -48,9 +48,10 @@ export default function SearchBar() {
         <button type="submit">Search</button>
       </form>
       <div>
-        {showDropdown && results.length > 0 && (
-          <div className="dropdown">
-            {results.map((user) => (
+      {showDropdown && (
+        <div className="dropdown">
+          {results.length > 0 ? (
+            results.map((user) => (
               <div 
                 key={user.username}
                 className="dropdown-item"
@@ -58,9 +59,14 @@ export default function SearchBar() {
               >
                 <p>{user.username}</p>
               </div>
-            ))}
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="dropdown-item">
+              <p>No user found...</p>
+            </div>
+          )}
+        </div>
+      )}
       </div>
     </div>
   )
