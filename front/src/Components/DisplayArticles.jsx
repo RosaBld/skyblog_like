@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import DisplayComments from "./DisplayComments";
 
 export default function DisplayArticles() {
   const [articles, setArticles] = useState([]);
@@ -37,6 +37,9 @@ export default function DisplayArticles() {
             <h2>{article.title}</h2>
             <p>{article.content}</p>
             <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
+            <div>
+              <DisplayComments articleId={article._id} />
+            </div>
           </div>
         ))
       ) : (

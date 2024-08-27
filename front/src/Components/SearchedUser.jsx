@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import DisplayComments from "./DisplayComments";
 
 export default function SearchedUser() {
   const { username } = useParams();
@@ -50,6 +51,9 @@ export default function SearchedUser() {
               <h2>{article.title}</h2>
               <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
               <p>{article.content}</p>
+              <div>
+                <DisplayComments articleId={article._id} />
+              </div>
             </div>
           ))
         ) : (

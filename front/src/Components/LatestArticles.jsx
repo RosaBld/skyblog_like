@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DisplayComments from "./DisplayComments";
 
 export default function LatestArticles() {
   const [articles, setArticles] = useState([]);
@@ -15,6 +16,7 @@ export default function LatestArticles() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log('Fetched articles:', data.articles); // Log the fetched articles
         setArticles(data.articles);
       } else {
         console.error('Failed to fetch articles');
@@ -39,6 +41,9 @@ export default function LatestArticles() {
               <p>{article.content}</p>
               <p>By: {article.user}</p>
               <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
+              <div>
+                <DisplayComments articleId={article._id} />
+              </div>
             </div>
           ))
         }

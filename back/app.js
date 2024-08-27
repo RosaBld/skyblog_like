@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 
 const articleController = require('./controllers/articleController');
 
+const commentController = require('./controllers/commentController');
+
 const mongoURI = process.env.MONGO_URI;
 
 const corsOptions = {
@@ -65,6 +67,10 @@ app.get("/check-token", (req, res) => {
 app.post("/newArticle", auth, articleController.newArticle);
 app.get("/userArticles", auth, articleController.userArticles);
 app.get("/latestArticlesForWeek", articleController.latestArticlesForWeek);
+
+app.post("/addComment", auth, commentController.addComment);
+app.get("/showComment", commentController.showComment);
+
 
 // Start the server
 const port = process.env.PORT || 5000;

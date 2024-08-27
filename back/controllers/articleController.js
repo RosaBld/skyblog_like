@@ -70,6 +70,7 @@ exports.latestArticlesForWeek = [
         }).sort({ createdAt: -1 });
 
         return articles.map(article => ({
+          _id: article._id,
           user: user.username,
           title: article.title,
           content: article.content,

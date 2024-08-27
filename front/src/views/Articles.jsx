@@ -51,6 +51,7 @@ export default function Articles() {
         <div>
           <DisplayArticles />
         </div>
+        
       </div>
       
     </div>
