@@ -236,6 +236,79 @@ summary {
   display: list-item;
 }
 
+.article {
+  padding: 0 5vw;
+}
+.article .titleArticle {
+  font-size: 24px;
+  text-align: start;
+}
+.article .authorArticle {
+  font-size: 14px;
+  text-align: end;
+}
+.article .contentArticle {
+  font-weight: 400;
+  text-align: start;
+}
+.article .dateArticle {
+  font-size: 12px;
+  text-align: end;
+}
+
+.dateComment {
+  font-size: 12px;
+  text-align: end;
+}
+
+.article {
+  border: solid 1px black;
+  border-radius: 25px;
+}
+.article .titleAndAuthor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.articleAndComment {
+  margin: 2rem 0;
+}
+
+.comments-wrapper {
+  display: grid;
+  place-items: center;
+}
+.comments-wrapper .comments-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+  width: 90%;
+  border-left: solid 1px black;
+  border-right: solid 1px black;
+  border-bottom: solid 1px black;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.comments-container.show {
+  max-height: 1000px; /* Adjust as needed */
+}
+
+.comments-container.hide {
+  max-height: 0;
+}
+
+.comment {
+  margin: 0 5vw;
+}
+.comment .contentComment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .nav {
   display: flex;
   flex-direction: row;

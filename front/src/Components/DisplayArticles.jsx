@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import DisplayComments from "./DisplayComments";
+import ArticleList from "./ArticleList";
+
 
 export default function DisplayArticles() {
   const [articles, setArticles] = useState([]);
@@ -31,20 +32,7 @@ export default function DisplayArticles() {
 
   return (
     <div>
-      {articles.length > 0 ? (
-        articles.map((article) => (
-          <div key={article._id}>
-            <h2>{article.title}</h2>
-            <p>{article.content}</p>
-            <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
-            <div>
-              <DisplayComments articleId={article._id} />
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No articles found</p>
-      )}
+      <ArticleList articles={articles} />
     </div>
   )
 }

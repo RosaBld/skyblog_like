@@ -1,0 +1,16 @@
+.article {
+  border: solid 1px black;
+  border-radius: 25px;
+
+  .titleAndAuthor {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+
+.articleAndComment {
+  margin: 2rem 0;
+}

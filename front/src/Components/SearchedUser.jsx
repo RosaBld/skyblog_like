@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import DisplayComments from "./DisplayComments";
+import ArticleList from "./ArticleList";
 
 export default function SearchedUser() {
   const { username } = useParams();
@@ -44,22 +44,7 @@ export default function SearchedUser() {
       ) : (
         <p>No user found</p>
       )}
-      <div>
-        {articles.length > 0 ? (
-          articles.map((article) => (
-            <div key={article._id}>
-              <h2>{article.title}</h2>
-              <p>Created at: {new Date(article.createdAt).toLocaleString()}</p>
-              <p>{article.content}</p>
-              <div>
-                <DisplayComments articleId={article._id} />
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No articles found</p>
-        )}
-      </div>
+      <ArticleList articles={articles} />
     </div>
   );
 }

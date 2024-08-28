@@ -1,0 +1,28 @@
+.article {
+  padding: 0 5vw;
+  
+  .titleArticle {
+    font-size: 24px;
+    text-align: start;
+  }
+
+  .authorArticle {
+    font-size: 14px;
+    text-align: end;
+  }
+
+  .contentArticle {
+    font-weight: 400;
+    text-align: start;
+  }
+
+  .dateArticle {
+    font-size: 12px;
+    text-align: end;
+  }
+}
+
+.dateComment {
+  font-size: 12px;
+  text-align: end;
+}

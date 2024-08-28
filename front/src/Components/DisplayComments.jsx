@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
 export default function DisplayComments({ articleId }) {
   const [comments, setComments] = useState([]);
 
@@ -35,10 +34,14 @@ export default function DisplayComments({ articleId }) {
     <div>
       {comments.length > 0 ? (
         comments.map((comment) => (
-          <div key={comment._id}>
-            <h3>{comment.content}</h3>
-            <p>{comment.username}</p>
-            <p>Comment created at: {new Date(comment.createdAt).toLocaleString()}</p>
+          <div key={comment._id} className="comment">
+            <div className="contentComment">
+              <h4>{comment.username} said:</h4>
+              <p>{comment.content}</p>
+            </div>
+            <div className="dateComment">
+              <p>Comment created at: {new Date(comment.createdAt).toLocaleDateString()}</p>
+            </div>
           </div>
         ))
       ) : (

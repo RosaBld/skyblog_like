@@ -1,0 +1,33 @@
+.comments-wrapper {
+  display: grid;
+  place-items: center;
+
+  .comments-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    width: 90%;
+    border-left: solid 1px black;
+    border-right: solid 1px black;
+    border-bottom: solid 1px black;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+}
+
+.comments-container.show {
+  max-height: 1000px; /* Adjust as needed */
+}
+
+.comments-container.hide {
+  max-height: 0;
+}
+
+.comment {
+  margin: 0 5vw;
+  .contentComment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
