@@ -15,6 +15,7 @@ import Profil from './views/Profil';
 import Options from './views/Options';
 import MyFriends from './views/MyFriends';
 import User from './views/User';
+import About from './views/About';
 
 ReactModal.setAppElement('#root');
 
@@ -31,19 +32,20 @@ function App() {
           {isLoggedIn ? (
               <>
                 <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
+                <Route path="/about" element={ <About /> } />
                 <Route path="/myFriends" element={ <MyFriends /> } />
                 <Route path="/user/:username" element={<User />} />
-                {/* <Route path="/articles" element={ <Articles /> } /> */}
                 <Route path="/options" element={ <Options /> } />
                 <Route path="/profil" element={ <Profil /> } />
               </>
             ) : (
-              <>
+              <>                
+                <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
+                <Route path="/about" element={ <About /> } />
+                <Route path="/user/:username" element={<User />} />
                 <Route path="/register" element={ <Register /> } />
                 <Route path="/login" element={ <Login /> } />
-                <Route path="/profil" element={ <Profil /> } />
-                <Route path="/user/:username" element={<User />} />
-                <Route path="/" element={ <Home getToken={getToken} logoutUser={logoutUser} /> } />
+                
               </>
             )}
           </Routes>

@@ -7,41 +7,35 @@ import { Link } from 'react-router-dom';
 import SearchBar from '../Components/SearchBar';
 
 export default function Header() {
-
   const { isLoggedIn, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [isLoginView, setIsLoginView] = useState(true);
-  
+
   const toggleModal = () => {
     setShowModal(!showModal);
-  }
+  };
 
   const toggleView = () => {
-    setIsLoginView(!isLoginView)
+    setIsLoginView(!isLoginView);
   };
 
   return (
-    <div>
+    <header>
       <nav>
-        <ul>
+        <ul className="nav">
           <li>
-            <Link to="">
-              Home
-            </Link>
+            <Link to="/">Home</Link>
           </li>
-        </ul>
-        <ul>
-          {isLoggedIn ? (
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          {isLoggedIn && (
             <>
               <li>
-                <Link to="/myFriends">
-                  My Friends
-                </Link>
+                <Link to="/myFriends">My Friends</Link>
               </li>
               <li>
-                <Link to="/profil">
-                  My Profil
-                </Link>
+                <Link to="/profil">My Profil</Link>
               </li>
               <li>
                 <SearchBar />
@@ -50,16 +44,20 @@ export default function Header() {
                 <button onClick={logout}>Log Out</button>
               </li>
             </>
-          ) : (
+          )}
+          {!isLoggedIn && (
             <>
               <li>
                 <SearchBar />
               </li>
-              <button onClick={toggleModal}>Login</button>
-              <ReactModal 
+              <li>
+                <button onClick={toggleModal}>Login</button>
+              </li>
+              <ReactModal
                 isOpen={showModal}
                 onRequestClose={toggleModal}
-                contentLabel="Participant Form"
+                contentLabel="Authentication Modal"
+                ariaHideApp={false}
                 style={{
                   overlay: {
                     backgroundColor: 'rgba(0, 0, 0, 0.25)',
@@ -75,17 +73,19 @@ export default function Header() {
                     borderRadius: '25px',
                     position: 'absolute',
                     top: '0',
-                    marginTop: '10vw'
+                    marginTop: '10vw',
                   },
                 }}
               >
                 {isLoginView ? <Login /> : <Register />}
-                <button onClick={toggleView}>{isLoginView ? "Switch to Register" : "Switch to Login"}</button>
+                <button onClick={toggleView}>
+                  {isLoginView ? 'Switch to Register' : 'Switch to Login'}
+                </button>
               </ReactModal>
             </>
           )}
         </ul>
       </nav>
-    </div>
-  )
+    </header>
+  );
 }
